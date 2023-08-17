@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class Servidor extends Conexion {
 
 	public Servidor() {
-		super("Servidor");
+		super("servidor");
 	}
 
 	public void startServer() {
@@ -23,15 +23,19 @@ public class Servidor extends Conexion {
 
 			String charla = "";
 //			int cont = 0;
-			while (charla != "salir") {
-				salidaCliente = new DataOutputStream(cs.getOutputStream());
-				BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
-				charla = entrada.toString();
-				while ((mensajeServidor = entrada.readLine()) != null) {
-					System.out.println(mensajeServidor);
-				}
+
+			salidaCliente = new DataOutputStream(cs.getOutputStream());
+
+			BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
+
+			while ((mensajeServidor = entrada.readLine()) != null) {
+
+				System.out.println(mensajeServidor);
+
 			}
+
 			System.out.println("Fin de la conexion...");
+			ss.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
