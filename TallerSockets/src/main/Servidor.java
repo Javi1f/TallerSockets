@@ -1,11 +1,14 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Servidor extends Conexion {
+
+	private DataInputStream in;
 
 	public Servidor() {
 		super("servidor");
@@ -20,21 +23,18 @@ public class Servidor extends Conexion {
 			System.out.println("Cliente en linea...");
 			System.out.println(cs.getInetAddress());
 			System.out.println(cs.getPort());
-
-			String charla = "";
-//			int cont = 0;
+			in = new DataInputStream(cs.getInputStream());
 
 			salidaCliente = new DataOutputStream(cs.getOutputStream());
-
-			BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
-
-			while ((mensajeServidor = entrada.readLine()) != null) {
-
-				System.out.println(mensajeServidor);
-
+			String charla = " ";
+			charla.toLowerCase();
+			while (charla != "salir") {
+				charla = in.readUTF();
+				salidaCliente.writeUTF(charla);
 			}
 
 			System.out.println("Fin de la conexion...");
+			in.close();
 			ss.close();
 		} catch (IOException e) {
 			e.printStackTrace();
