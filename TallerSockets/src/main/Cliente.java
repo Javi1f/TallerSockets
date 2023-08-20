@@ -27,20 +27,20 @@ public class Cliente extends Conexion {
 			salidaServidor = new DataOutputStream(cs.getOutputStream());
 
 			String mensaje = " ";
-			while (mensaje != "salir") {
-
+			while (true) {
+				System.out.println(in.readUTF());
 				mensaje = sc.nextLine();
-
 				salidaServidor.writeUTF(mensaje);
 				System.out.println(in.readUTF());
+				if (mensaje == "6") {
+					break;
+				}
 			}
 			in.close();
 			cs.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Fin de la conexion");
 		}
-
 	}
 
 }

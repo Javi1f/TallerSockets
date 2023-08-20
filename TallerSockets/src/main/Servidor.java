@@ -1,10 +1,8 @@
 package main;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class Servidor extends Conexion {
 
@@ -27,13 +25,38 @@ public class Servidor extends Conexion {
 
 			salidaCliente = new DataOutputStream(cs.getOutputStream());
 			String charla = " ";
-			charla.toLowerCase();
-			while (charla != "salir") {
-				charla = in.readUTF();
-				salidaCliente.writeUTF(charla);
+			if (cs.isConnected()) {
+				cicloprincipal: while (true) {
+					salidaCliente.writeUTF(
+							"Por favor elija una de las siguientes opciones:\n1) si\n2) no\n3) talvez\n4) depronto\n5) salir");
+					charla = in.readUTF();
+					System.out.println(charla);
+					switch (charla) {
+					case "1": {
+						salidaCliente.writeUTF("sisas");
+						break;
+					}
+					case "2": {
+						salidaCliente.writeUTF("noks");
+						break;
+					}
+					case "3": {
+						salidaCliente.writeUTF("tal vez mi bro");
+						break;
+					}
+					case "4": {
+						salidaCliente.writeUTF("depronto y con suerte pana");
+						break;
+					}
+					case "5": {
+						break cicloprincipal;
+					}
+					default:
+						salidaCliente.writeUTF("Opcion no valida, intentelo de nuevo por favor");
+					}
+				}
 			}
 
-			System.out.println("Fin de la conexion...");
 			in.close();
 			ss.close();
 		} catch (IOException e) {
