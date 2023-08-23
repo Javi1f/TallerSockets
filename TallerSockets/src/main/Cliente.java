@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Cliente extends Conexion {
+public class Cliente extends Conexion implements Runnable {
 
 	private DataInputStream in;
 	private Scanner sc;
@@ -21,26 +21,98 @@ public class Cliente extends Conexion {
 
 	}
 
-	public void startCliente() {
+	public void startClient() {
+		System.out.println("Starting client...");
 
 		try {
 			salidaServidor = new DataOutputStream(cs.getOutputStream());
 
 			String mensaje = " ";
-			while (true) {
+			int count = 0;
+			cicloprincipal: while (true) {
 				System.out.println(in.readUTF());
 				mensaje = sc.nextLine();
-				salidaServidor.writeUTF(mensaje);
-				System.out.println(in.readUTF());
-				if (mensaje == "6") {
-					break;
+
+				if (count == 0) {
+					switch (mensaje) {
+					case "1": {
+
+						salidaServidor.writeUTF("1");
+						count++;
+						break;
+
+					}
+					case "2": {
+
+						salidaServidor.writeUTF("2");
+						count++;
+						break;
+
+					}
+					case "3": {
+
+						salidaServidor.writeUTF("3");
+						count++;
+						break;
+
+					}
+					case "4": {
+						System.out.println("end of connection");
+						break cicloprincipal;
+
+					}
+					default:
+
+					}
+				} else if (count == 1) {
+
+					switch (mensaje) {
+					case "1": {
+
+						salidaServidor.writeUTF("1");
+						count++;
+						break;
+
+					}
+					case "2": {
+
+						salidaServidor.writeUTF("2");
+						count++;
+						break;
+
+					}
+					case "3": {
+
+						salidaServidor.writeUTF("3");
+						count++;
+						break;
+
+					}
+					case "4": {
+						salidaServidor.writeUTF("4");
+						count++;
+						break;
+
+					}
+
+					}
+				} else {
+					salidaServidor.writeUTF(mensaje);
+					System.out.println(in.readUTF());
 				}
+
 			}
-			in.close();
-			cs.close();
+
 		} catch (Exception e) {
-			System.out.println("Fin de la conexion");
+			System.out.println("end of connection");
 		}
+	}
+
+	@Override
+	public void run() {
+
+		startClient();
+
 	}
 
 }
